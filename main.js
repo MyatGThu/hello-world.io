@@ -241,12 +241,12 @@
       scrollTrigger: { trigger: section, start: "top top", end: "bottom bottom", scrub: 0.6, invalidateOnRefresh: true }
     });
     tiles.forEach(function (tile, i) {
-      var col = i % 4, row = Math.floor(i / 4);
+      var step = i - (tiles.length - 1) / 2; // centred staircase index
       tl.to(tile, {
-        // Pull every tile into a tidy 4-column cluster centred below the heading.
-        x: function () { return field.clientWidth / 2 - (tile.offsetLeft + tile.offsetWidth / 2) + (col - 1.5) * 70; },
-        y: function () { return field.clientHeight * 0.72 - (tile.offsetTop + tile.offsetHeight / 2) + (row - 1) * 56; },
-        rotation: (i % 2 ? 1 : -1) * 3,
+        // Cascade every tile into a diagonal staircase centred below the heading.
+        x: function () { return field.clientWidth / 2 - (tile.offsetLeft + tile.offsetWidth / 2) + step * 52; },
+        y: function () { return field.clientHeight * 0.72 - (tile.offsetTop + tile.offsetHeight / 2) + step * 46; },
+        rotation: -2,
         ease: "none"
       }, 0);
     });
