@@ -252,6 +252,41 @@ section { position: relative; }
 .caps { padding: clamp(80px, 14vh, 200px) var(--pad); max-width: var(--maxw); margin: 0 auto; }
 .caps__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: clamp(32px, 6vh, 64px); }
 .caps__note { color: var(--muted); max-width: 30ch; }
+
+/* ----- Now band ----- */
+.now { max-width: var(--maxw); margin: 0 auto; display: flex; flex-wrap: wrap; align-items: baseline; gap: 14px 30px; padding: clamp(26px, 4.5vh, 48px) var(--pad); border-top: 1px solid var(--line); }
+.now__tag { display: inline-flex; align-items: center; gap: 9px; flex: none; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; font-weight: 500; color: var(--accent); }
+.now__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: nowpulse 2.4s ease-out infinite; }
+.now__text { font-size: clamp(16px, 1.8vw, 22px); line-height: 1.45; max-width: 62ch; color: var(--ink); }
+.now__text strong { font-weight: 600; }
+@keyframes nowpulse { 0% { box-shadow: 0 0 0 0 rgba(184,73,44,0.45); } 70% { box-shadow: 0 0 0 10px rgba(184,73,44,0); } 100% { box-shadow: 0 0 0 0 rgba(184,73,44,0); } }
+
+/* ----- Approach / How I work ----- */
+.approach { max-width: var(--maxw); margin: 0 auto; padding: clamp(70px, 12vh, 150px) var(--pad); }
+.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(20px, 2.4vw, 40px); }
+.step { padding-top: 24px; border-top: 2px solid var(--ink); }
+.step__n { font-size: 13px; font-weight: 600; letter-spacing: .04em; color: var(--accent); font-variant-numeric: tabular-nums; }
+.step__t { margin-top: 16px; font-size: clamp(19px, 1.6vw, 24px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.12; }
+.step__d { margin-top: 12px; color: var(--muted); font-size: 14.5px; line-height: 1.55; }
+@media (max-width: 900px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+
+/* ----- Career timeline (work sidebar) ----- */
+.tl { list-style: none; margin: 28px 0 0; padding: 2px 0 2px 18px; position: relative; }
+.tl::before { content: ""; position: absolute; left: 3px; top: 7px; bottom: 7px; width: 1px; background: var(--line); }
+.tl__i { position: relative; padding-bottom: 18px; }
+.tl__i:last-child { padding-bottom: 0; }
+.tl__i::before { content: ""; position: absolute; left: -18px; top: 4px; width: 7px; height: 7px; border-radius: 50%; background: var(--bone); border: 1px solid var(--muted); }
+.tl__i:first-child::before { background: var(--accent); border-color: var(--accent); }
+.tl__y { display: block; font-size: 12px; letter-spacing: .04em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+.tl__c { display: block; margin-top: 3px; font-size: 13px; color: var(--ink-2); line-height: 1.35; }
+
+/* ----- Contact CTA extras ----- */
+.contact__avail { display: inline-flex; align-items: center; gap: 9px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: rgba(236,229,215,0.85); margin-bottom: clamp(28px, 5vh, 52px); }
+.contact__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: nowpulse 2.4s ease-out infinite; }
+.contact__arrow { display: inline-block; transition: transform .35s var(--ease); }
+.contact__mail:hover .contact__arrow { transform: translateX(6px); }
+@media (prefers-reduced-motion: reduce) { .now__dot, .contact__dot { animation: none; } }
 .caps__list { list-style: none; padding: 0; }
 .cap { display: grid; grid-template-columns: 64px 1fr auto; align-items: center; gap: 24px; padding: clamp(20px, 3vh, 34px) 0; border-top: 1px solid var(--line); position: relative; cursor: default; transition: padding-left .4s var(--ease); }
 .cap:last-child { border-bottom: 1px solid var(--line); }
@@ -334,7 +369,7 @@ section { position: relative; }
 /* ----- CONTACT ----- */
 .contact { background: var(--noir); color: var(--noir-fg); padding: clamp(90px, 16vh, 220px) var(--pad); text-align: center; overflow: hidden; }
 .contact__label { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-bottom: clamp(28px, 5vh, 52px); }
-.contact__title { font-size: clamp(64px, 15vw, 220px); font-weight: 600; line-height: 0.86; letter-spacing: -0.05em; }
+.contact__title { font-size: clamp(48px, 12vw, 170px); font-weight: 600; line-height: 0.86; letter-spacing: -0.05em; }
 .contact__title .line { display: block; overflow: hidden; }
 .contact__title .word { display: inline-block; }
 .contact__title .word--accent { color: var(--accent); }
