@@ -191,9 +191,9 @@ section { position: relative; }
 .badge:hover .badge__center { transform: scale(1.12); }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (max-width: 720px) {
-  /* Keep .badge positioned so .badge__svg (absolute inset:0) stays contained
-     instead of escaping to .hero__main and overlapping the title. */
-  .badge { position: relative; top: auto; right: auto; transform: none; margin: 32px auto 0; }
+  /* Keep .badge absolutely positioned (so its SVG stays contained) and sit it
+     inline to the right of the name instead of stacking below. */
+  .badge { position: absolute; top: 50%; right: 0; transform: translateY(-50%); margin: 0; width: clamp(92px, 26vw, 124px); }
 }
 
 .hero__foot {
