@@ -29,16 +29,27 @@
     return el.querySelectorAll(".w");
   }
 
+  /* ---------- Scroll lock ---------- */
+  function lockScroll() {
+    document.documentElement.classList.add("is-loading");
+    if (lenis) lenis.stop();
+  }
+  function unlockScroll() {
+    document.documentElement.classList.remove("is-loading");
+    if (lenis) lenis.start();
+  }
+
   /* ---------- Preloader ---------- */
   function runLoader(done) {
     var loader = document.getElementById("loader");
     var countEl = document.getElementById("loaderCount");
     var barEl = document.getElementById("loaderBar");
-    if (!loader) { done(); return; }
-    if (reduceMotion || !hasGSAP) { loader.style.display = "none"; done(); return; }
+    if (!loader) { unlockScroll(); done(); return; }
+    if (reduceMotion || !hasGSAP) { loader.style.display = "none"; unlockScroll(); done(); return; }
 
+    lockScroll();
     var obj = { v: 0 };
-    var tl = gsap.timeline({ onComplete: done });
+    var tl = gsap.timeline({ onComplete: function () { unlockScroll(); done(); } });
     tl.to(obj, {
       v: 100, duration: 1.2, ease: "power2.inOut",
       onUpdate: function () { var n = Math.round(obj.v); countEl.textContent = n; barEl.style.width = n + "%"; }
