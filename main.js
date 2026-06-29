@@ -324,22 +324,49 @@
     });
   }
 
-  /* ---------- Encrypted name cipher ---------- */
+  /* ---------- Encrypted name cipher (hover/tap to reveal) ---------- */
   function initCipher() {
-    var els = Array.prototype.slice.call(document.querySelectorAll("[data-cipher]"));
-    if (!els.length) return;
-    var GLYPHS = "ABCDEFGHJKLMNPRSTUVWXYZ0123456789#%&@$?/<>*+=§";
+    var words = Array.prototype.slice.call(document.querySelectorAll(".hero__title [data-cipher]"));
+    var title = document.querySelector(".hero__title--cipher");
+    if (!words.length || !title) return;
+    var portrait = document.querySelector(".hero__portrait");
+
+    // Mostly hex, a sprinkle of half-width katakana for a Matrix feel.
+    var GLYPHS = "0123456789ABCDEF0123456789ABCDEF" + "ｱｶｻﾀﾅﾊﾏﾔﾗﾝｷｼﾆ";
     function scramble(el) {
       var n = parseInt(el.getAttribute("data-cipher"), 10) || el.textContent.length;
       var s = "";
       for (var i = 0; i < n; i++) s += GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length));
       el.textContent = s;
     }
-    els.forEach(scramble);
-    if (reduceMotion) return; // leave a single static cipher, no churn
+    function showReal() { words.forEach(function (el) { el.textContent = el.getAttribute("data-real") || ""; }); }
+
+    var nameShown = false;
+    function revealName(state) {
+      nameShown = state;
+      title.classList.toggle("is-revealed", state);
+      if (state) showReal();
+    }
+    function revealPhoto(state) { if (portrait) portrait.classList.toggle("is-revealed", state); }
+
+    // Desktop reveals on hover; touch toggles on tap.
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      title.addEventListener("mouseenter", function () { revealName(true); });
+      title.addEventListener("mouseleave", function () { revealName(false); });
+      if (portrait) {
+        portrait.addEventListener("mouseenter", function () { revealPhoto(true); });
+        portrait.addEventListener("mouseleave", function () { revealPhoto(false); });
+      }
+    } else {
+      title.addEventListener("click", function () { revealName(!nameShown); });
+      if (portrait) portrait.addEventListener("click", function () { revealPhoto(!portrait.classList.contains("is-revealed")); });
+    }
+
+    words.forEach(scramble);
+    if (reduceMotion) return; // static cipher; hover/tap still reveals
 
     var timer = null;
-    function tick() { els.forEach(scramble); }
+    function tick() { if (!nameShown) words.forEach(scramble); }
     // Only churn while the hero is on screen.
     var hero = document.querySelector(".hero");
     if (hero && "IntersectionObserver" in window) {
