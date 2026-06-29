@@ -206,8 +206,13 @@
   function initParallax() {
     if (!hasGSAP || reduceMotion) return;
     gsap.utils.toArray("[data-parallax]").forEach(function (el) {
-      var depth = parseFloat(el.getAttribute("data-parallax")) || 0.2;
-      gsap.to(el, { yPercent: depth * 100, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true } });
+      var y = parseFloat(el.getAttribute("data-parallax")) || 0;
+      var x = parseFloat(el.getAttribute("data-parallax-x")) || 0;
+      var rot = parseFloat(el.getAttribute("data-parallax-rot")) || 0;
+      gsap.to(el, {
+        yPercent: y * 100, xPercent: x * 100, rotation: rot, ease: "none",
+        scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true }
+      });
     });
   }
 

@@ -234,6 +234,8 @@ section { position: relative; }
 .intro__lead { font-size: clamp(24px, 3.8vw, 52px); font-weight: 400; line-height: 1.22; letter-spacing: -0.02em; max-width: 24ch; }
 .intro__lead .w { display: inline-block; color: var(--faint); transition: color .2s linear; }
 .intro__lead .w.on { color: var(--ink); }
+.intro__more { display: inline-block; margin-top: clamp(28px, 5vh, 56px); font-size: clamp(16px, 1.6vw, 20px); font-weight: 500; padding-bottom: 4px; border-bottom: 1px solid var(--ink); transition: color .3s var(--ease), border-color .3s var(--ease); }
+.intro__more:hover { color: var(--accent); border-color: var(--accent); }
 
 /* ----- STATS ----- */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); max-width: var(--maxw); margin: 0 auto; }
@@ -336,6 +338,55 @@ section { position: relative; }
 /* ----- FOOTER ----- */
 .foot { background: var(--noir); color: var(--faint); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 28px var(--pad); border-top: 1px solid rgba(236,229,215,0.12); font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
 .foot a:hover { color: var(--noir-fg); }
+
+/* ===========================================================================
+   ABOUT PAGE
+   =========================================================================== */
+.hero--about { padding-top: 140px; }
+.hero__title--about { font-size: clamp(48px, 11vw, 150px); }
+
+.play, .grow { position: relative; padding: clamp(70px, 12vh, 170px) var(--pad); max-width: var(--maxw); margin: 0 auto; }
+.play__head { position: relative; z-index: 2; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 18px; margin-bottom: clamp(32px, 6vh, 60px); }
+.play__note { color: var(--muted); max-width: 28ch; }
+
+/* Floating parallax blocks */
+.blok { position: absolute; z-index: 0; pointer-events: none; will-change: transform; }
+.blok--ring { width: clamp(80px, 11vw, 150px); aspect-ratio: 1; border: 2px solid var(--accent); border-radius: 50%; top: 6%; right: 7%; opacity: 0.45; }
+.blok--sq { width: clamp(60px, 8vw, 110px); aspect-ratio: 1; background: var(--accent); border-radius: 16px; bottom: 12%; left: 3%; opacity: 0.12; }
+.blok--dot { width: 20px; aspect-ratio: 1; background: var(--ink); border-radius: 50%; top: 44%; left: 22%; opacity: 0.3; }
+.blok--plus { font-size: clamp(60px, 8vw, 96px); line-height: 1; color: var(--accent); top: 62%; right: 16%; opacity: 0.35; font-weight: 300; }
+.blok--sq2 { width: clamp(56px, 7vw, 84px); aspect-ratio: 1; border: 2px solid var(--ink); border-radius: 14px; top: 16%; left: 8%; opacity: 0.22; }
+.blok--dot2 { width: 26px; aspect-ratio: 1; background: var(--accent); border-radius: 50%; bottom: 22%; right: 12%; opacity: 0.4; }
+
+/* Card grid */
+.cardgrid { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; align-items: start; }
+.icard {
+  background: #fff; border: 1px solid var(--line); border-radius: 18px;
+  padding: clamp(20px, 2.2vw, 30px); display: flex; flex-direction: column; gap: 14px; min-height: 240px;
+  transition: border-color .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease); will-change: transform;
+}
+@media (hover: hover) { .icard:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 26px 50px -28px rgba(24,21,17,0.4); } }
+.icard__logo { height: 46px; display: flex; align-items: center; gap: 12px; }
+.icard__logo img { height: 42px; width: auto; max-width: 92px; object-fit: contain; display: block; }
+.icard__logo--multi img { height: 34px; }
+.icard__title { font-size: clamp(20px, 2.2vw, 28px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.05; }
+.icard__desc { color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+.icard__tag { margin-top: auto; align-self: flex-start; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; }
+
+/* Binge list */
+.shows { list-style: none; padding: 0; margin: 0; }
+.shows li { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 11px 0; border-top: 1px solid var(--line); }
+.shows li span { font-weight: 500; }
+.shows li em { font-style: normal; font-size: 11px; letter-spacing: .05em; text-transform: uppercase; color: var(--faint); white-space: nowrap; }
+
+/* Feature (currently studying) — dark card */
+.icard--feature { background: var(--noir); color: var(--noir-fg); border-color: transparent; }
+.icard--feature .icard__desc { color: rgba(236,229,215,0.66); }
+.icard--feature .icard__tag { color: var(--faint); border-color: rgba(236,229,215,0.2); }
+.icard__badge { align-self: flex-start; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--bone); background: var(--accent); border-radius: 999px; padding: 6px 12px; }
+.icard__code { font-size: clamp(30px, 3.6vw, 46px); font-weight: 600; letter-spacing: -0.03em; color: var(--accent); line-height: 1; }
+
+@media (max-width: 560px) { .blok--dot, .blok--plus, .blok--sq2 { display: none; } }
 
 /* ===========================================================================
    Reveal states (JS-only)
