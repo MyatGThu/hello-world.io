@@ -342,6 +342,13 @@
 
     runLoader(function () {
       revealSplitWords(document.querySelector(".hero"));
+      var heroTitle = document.querySelector(".hero__title");
+      if (heroTitle && !reduceMotion) {
+        setTimeout(function () {
+          heroTitle.classList.add("is-glitch");
+          setTimeout(function () { heroTitle.classList.remove("is-glitch"); }, 650);
+        }, 800);
+      }
       var contact = document.querySelector(".contact");
       if (contact && hasGSAP && !reduceMotion) {
         ScrollTrigger.create({ trigger: contact, start: "top 70%", once: true, onEnter: function () { revealSplitWords(contact); } });
