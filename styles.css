@@ -10,6 +10,13 @@
   font-style: normal;
   font-display: swap;
 }
+@font-face {
+  font-family: "Bodoni Moda";
+  src: url("assets/fonts/bodoni-moda.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
 
 /* ----- Tokens ----- */
 :root {
@@ -395,8 +402,9 @@ section { position: relative; }
 /* ----- CONTACT ----- */
 .contact { background: var(--noir); color: var(--noir-fg); padding: clamp(90px, 16vh, 220px) var(--pad); text-align: center; overflow: hidden; }
 .contact__label { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-bottom: clamp(28px, 5vh, 52px); }
-.contact__title { font-size: clamp(48px, 12vw, 170px); font-weight: 600; line-height: 0.86; letter-spacing: -0.05em; }
-.contact__title .line { display: block; overflow: hidden; }
+.contact__title { font-family: "Bodoni Moda", Georgia, "Times New Roman", serif; font-size: clamp(46px, 11.5vw, 168px); font-weight: 800; line-height: 0.94; letter-spacing: -0.005em; }
+/* Extra room below the baseline so descenders (the 'g') aren't clipped by the reveal mask */
+.contact__title .line { display: block; overflow: hidden; padding-bottom: 0.16em; margin-bottom: -0.16em; }
 .contact__title .word { display: inline-block; }
 .contact__title .word--accent { color: var(--accent); }
 .contact__mail { display: inline-block; margin-top: clamp(36px, 6vh, 64px); font-size: clamp(20px, 3vw, 40px); font-weight: 400; padding-bottom: 6px; border-bottom: 1px solid rgba(236,229,215,0.4); transition: color .35s var(--ease), border-color .35s var(--ease); }
