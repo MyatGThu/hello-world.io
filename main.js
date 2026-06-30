@@ -473,10 +473,14 @@
     var source = null, first = null, busy = false;
 
     function fill(el) {
-      noEl.textContent = el.querySelector(".case__no").textContent;
-      tagEl.textContent = el.querySelector(".case__tag").textContent;
-      titleEl.textContent = el.getAttribute("data-title") || el.querySelector(".case__title").textContent;
-      contentEl.innerHTML = el.querySelector(".case__data").innerHTML;
+      // Works for case files (.case__*) and credentials (.cert__*) alike.
+      var no = el.querySelector(".case__no, .cert__code");
+      var tag = el.querySelector(".case__tag, .cert__by");
+      var data = el.querySelector(".case__data, .cert__data");
+      noEl.textContent = no ? no.textContent : "";
+      tagEl.textContent = tag ? tag.textContent : "";
+      titleEl.textContent = el.getAttribute("data-title") || "";
+      contentEl.innerHTML = data ? data.innerHTML : "";
     }
     function lock(on) { if (lenis) { on ? lenis.stop() : lenis.start(); } else { document.body.style.overflow = on ? "hidden" : ""; } }
 
