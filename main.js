@@ -45,6 +45,8 @@
     var countEl = document.getElementById("loaderCount");
     var barEl = document.getElementById("loaderBar");
     if (!loader) { unlockScroll(); done(); return; }
+    // Arrived via a page transition — the wipe handles the reveal, skip the intro.
+    if (document.documentElement.classList.contains("is-entering")) { loader.style.display = "none"; unlockScroll(); done(); return; }
     if (reduceMotion || !hasGSAP) { loader.style.display = "none"; unlockScroll(); done(); return; }
 
     lockScroll();
@@ -413,84 +415,39 @@
     });
   }
 
-  /* ---------- Terminal easter egg (press ~ or the footer trigger) ---------- */
-  function initTerminal() {
-    var term = document.createElement("div");
-    term.className = "term";
-    term.setAttribute("role", "dialog");
-    term.setAttribute("aria-label", "Terminal");
-    term.setAttribute("aria-hidden", "true");
-    term.innerHTML =
-      '<div class="term__win">' +
-        '<div class="term__bar"><i></i><i></i><i></i><span class="term__title">myat@portfolio — zsh</span>' +
-          '<button class="term__x" type="button" aria-label="Close terminal">✕</button></div>' +
-        '<div class="term__body"><div class="term__out"></div>' +
-          '<div class="term__line"><span class="term__prompt">➜ ~</span>' +
-          '<input class="term__in" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command" /></div></div>' +
-      '</div>';
-    document.body.appendChild(term);
-    var out = term.querySelector(".term__out");
-    var input = term.querySelector(".term__in");
-    var open = false;
+  /* ---------- Page transition wipe ---------- */
+  function initTransitions() {
+    var wipe = document.querySelector(".wipe");
+    if (!wipe) return;
+    var html = document.documentElement;
 
-    var COMMANDS = {
-      help: "commands: whoami · skills · work · certs · contact · sudo hire-me · clear · exit",
-      whoami: "Myat Thu — IT Professional · Modern Workplace & Cloud · Melbourne, AU",
-      skills: "Intune · Entra ID · Microsoft 365 · Azure · Active Directory · Defender · PowerShell · Autopilot",
-      work: "IPH Limited (2025–now) · The Reject Shop (2023–25) · Azured Consulting (2022) · MYER (2019–24)",
-      certs: "MD-102 · AZ-900 · SC-900 · Google  [SC-300 in progress]",
-      contact: "myatgeorgethu@gmail.com — Melbourne, Australia"
-    };
+    // Arrived via a transition — uncover once the covered state has painted.
+    if (html.classList.contains("is-entering")) {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { html.classList.remove("is-entering"); });
+      });
+    }
+    try { sessionStorage.removeItem("wipe"); } catch (e) {}
 
-    function print(text, cls) {
-      var row = document.createElement("div");
-      row.className = "term__row" + (cls ? " " + cls : "");
-      row.textContent = text;
-      out.appendChild(row);
-      out.scrollTop = out.scrollHeight;
-    }
-    function run(raw) {
-      var cmd = raw.trim();
-      print("➜ ~ " + cmd, "term__echo");
-      if (!cmd) return;
-      var lc = cmd.toLowerCase();
-      if (lc === "clear") { out.innerHTML = ""; return; }
-      if (lc === "exit" || lc === "close" || lc === "q") { setOpen(false); return; }
-      if (lc === "sudo hire-me" || lc === "sudo hire me") {
-        print("[sudo] password for recruiter: ********", "term__muted");
-        print("✓ access granted — opening mail…", "term__ok");
-        setTimeout(function () { window.location.href = "mailto:myatgeorgethu@gmail.com?subject=Let%27s%20work%20together"; }, 650);
-        return;
-      }
-      if (COMMANDS.hasOwnProperty(lc)) { print(COMMANDS[lc]); return; }
-      print("zsh: command not found: " + cmd + " — try 'help'", "term__err");
-    }
-    function setOpen(state) {
-      open = state;
-      term.classList.toggle("is-open", open);
-      term.setAttribute("aria-hidden", String(!open));
-      if (lenis) { open ? lenis.stop() : lenis.start(); }
-      else { document.body.style.overflow = open ? "hidden" : ""; }
-      if (open) {
-        if (!out.childElementCount) print("Myat Thu // portfolio shell — type 'help'", "term__muted");
-        setTimeout(function () { input.focus(); }, 50);
-      }
-    }
-
-    input.addEventListener("keydown", function (e) { if (e.key === "Enter") { run(input.value); input.value = ""; } });
-    term.querySelector(".term__x").addEventListener("click", function () { setOpen(false); });
-    term.addEventListener("click", function (e) { if (e.target === term) setOpen(false); });
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && open) { setOpen(false); return; }
-      if ((e.key === "`" || e.key === "~") && e.target !== input) { e.preventDefault(); setOpen(!open); }
+    // Clear the cover if the page is restored from the back/forward cache.
+    window.addEventListener("pageshow", function (e) {
+      if (e.persisted) { wipe.classList.remove("is-cover"); html.classList.remove("is-entering"); }
     });
-    document.querySelectorAll(".foot").forEach(function (foot) {
-      var b = document.createElement("button");
-      b.className = "term-trigger";
-      b.type = "button";
-      b.textContent = "[~] console";
-      b.addEventListener("click", function () { setOpen(true); });
-      foot.appendChild(b);
+
+    if (reduceMotion) return; // navigate normally, no cover animation
+
+    document.addEventListener("click", function (e) {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest ? e.target.closest("a[href]") : null;
+      if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+      var url;
+      try { url = new URL(a.getAttribute("href"), location.href); } catch (_) { return; }
+      if (url.origin !== location.origin || url.pathname === location.pathname) return;
+      if (!/\.html?$/.test(url.pathname)) return; // only page-to-page navigation
+      e.preventDefault();
+      try { sessionStorage.setItem("wipe", "1"); } catch (e2) {}
+      wipe.classList.add("is-cover");
+      setTimeout(function () { location.href = url.href; }, 520);
     });
   }
 
@@ -511,7 +468,7 @@
     initMagnetic();
     initTilt();
     initWorkPreview();
-    initTerminal();
+    initTransitions();
 
     runLoader(function () {
       revealSplitWords(document.querySelector(".hero"));
