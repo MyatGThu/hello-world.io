@@ -415,6 +415,32 @@
     });
   }
 
+  /* ---------- Theme switcher (rotates Bone → Cyber → Acid) ---------- */
+  function initThemes() {
+    var THEMES = ["bone", "cyber", "acid"];
+    var LABELS = { bone: "Bone", cyber: "Cyber", acid: "Acid" };
+    var html = document.documentElement;
+    var fab = document.createElement("button");
+    fab.className = "theme-fab";
+    fab.type = "button";
+    fab.setAttribute("aria-label", "Switch colour theme");
+    fab.innerHTML = '<span class="theme-fab__dot" aria-hidden="true"></span><span class="theme-fab__name"></span>';
+    document.body.appendChild(fab);
+    var nameEl = fab.querySelector(".theme-fab__name");
+
+    function apply(theme) {
+      if (THEMES.indexOf(theme) < 0) theme = "bone";
+      html.dataset.theme = theme;
+      nameEl.textContent = LABELS[theme];
+      try { localStorage.setItem("theme", theme); } catch (e) {}
+    }
+    apply(html.dataset.theme || "bone");
+    fab.addEventListener("click", function () {
+      var i = THEMES.indexOf(html.dataset.theme || "bone");
+      apply(THEMES[(i + 1) % THEMES.length]);
+    });
+  }
+
   /* ---------- Page transition wipe ---------- */
   function initTransitions() {
     var wipe = document.querySelector(".wipe");
@@ -468,6 +494,7 @@
     initMagnetic();
     initTilt();
     initWorkPreview();
+    initThemes();
     initTransitions();
 
     runLoader(function () {
