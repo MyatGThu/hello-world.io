@@ -52,7 +52,7 @@
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* ---- Theme: Cyber (matte black, cyan + yellow neon, mono) ---- */
+/* ---- Theme: Cyber (matte black, cyan + yellow neon) ---- */
 html[data-theme="cyber"] {
   --bone: #0b0b0d; --bone-2: #141418; --ink: #f2f3f5; --ink-2: #ccd1da;
   --muted: #8b909c; --faint: #5b616b; --line: rgba(255, 255, 255, 0.12);
@@ -60,10 +60,9 @@ html[data-theme="cyber"] {
   --card: #121216; --grain-blend: screen; --grain-op: 0.05;
   --accent-glow: 0 0 18px rgba(255, 232, 61, 0.45);
   --glow-1: rgba(22, 224, 255, 0.10); --glow-2: rgba(255, 232, 61, 0.06);
-  --font: "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
-/* ---- Theme: Acid (matte black, neon green, mono) ---- */
+/* ---- Theme: Acid (matte black, neon green) ---- */
 html[data-theme="acid"] {
   --bone: #060a07; --bone-2: #0e160f; --ink: #d8ffe2; --ink-2: #a7d8b4;
   --muted: #5f8a6c; --faint: #3f5e49; --line: rgba(120, 255, 160, 0.14);
@@ -71,7 +70,6 @@ html[data-theme="acid"] {
   --card: #0a140d; --grain-blend: screen; --grain-op: 0.05;
   --accent-glow: 0 0 18px rgba(57, 255, 20, 0.5);
   --glow-1: rgba(57, 255, 20, 0.10); --glow-2: rgba(57, 255, 20, 0.05);
-  --font: "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
 * { box-sizing: border-box; margin: 0; }
