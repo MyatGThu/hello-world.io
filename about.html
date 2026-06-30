@@ -122,117 +122,69 @@
         <p class="play__note" data-reveal>How I switch off and recharge.</p>
       </div>
 
-      <div class="work__grid">
-        <aside class="work__aside">
-          <div class="work__sticky">
-            <p class="work__range">Pastimes</p>
-            <p class="work__hint">What I get up to when the laptop is shut.</p>
-          </div>
-        </aside>
-
-        <ol class="work__list">
-          <li class="role" data-role>
-            <div class="logo-tile" data-cursor="Dota 2">
-              <img class="logo-tile__img" src="assets/icons/dota2.svg" alt="Dota 2" />
-            </div>
-            <div class="role__body">
-              <div class="role__top">
-                <span class="role__year">Gaming · MOBA</span>
-                <span class="role__loc">Valve · Steam</span>
-              </div>
-              <h3 class="role__title" data-scramble>Dota 2</h3>
-              <p class="role__org">The ranked grind</p>
-              <ul class="role__points">
-                <li>Ranked matchmaking, team fights, and the occasional 60-minute nail-biter.</li>
-                <li>It's all about the draft, the macro calls, and a good late-game comeback.</li>
-              </ul>
-              <div class="role__brands" aria-hidden="true">
-                <img src="assets/icons/steam.svg" alt="Steam" />
-              </div>
-            </div>
-          </li>
-
-          <li class="role" data-role>
-            <div class="logo-tile" data-cursor="EA Sports FC">
-              <span class="logo-tile__mark logo-tile__mark--fc">EA&nbsp;FC</span>
-            </div>
-            <div class="role__body">
-              <div class="role__top">
-                <span class="role__year">Gaming · Football</span>
-                <span class="role__loc">EA Sports</span>
-              </div>
-              <h3 class="role__title" data-scramble>EA Sports FC</h3>
-              <p class="role__org">Career &amp; Ultimate Team</p>
-              <ul class="role__points">
-                <li>Building Ultimate Team squads and grinding through career mode.</li>
-                <li>Football for the nights I can't be out on the pitch.</li>
-              </ul>
-              <div class="role__brands" aria-hidden="true">
-                <img src="assets/icons/ea.svg" alt="EA Sports" />
-              </div>
-            </div>
-          </li>
-
-          <li class="role" data-role>
-            <div class="logo-tile" data-cursor="Superhero films">
-              <img class="logo-tile__img" src="assets/icons/dcentertainment.svg" alt="DC" />
-            </div>
-            <div class="role__body">
-              <div class="role__top">
-                <span class="role__year">Cinema · Marvel &amp; DC</span>
-                <span class="role__loc">Opening night</span>
-              </div>
-              <h3 class="role__title" data-scramble>Superhero films</h3>
-              <p class="role__org">Capes &amp; origin stories</p>
-              <ul class="role__points">
-                <li>Marvel and DC on the big screen — team-ups and a good origin story.</li>
-                <li>Always tracking what's next on an ever-growing watchlist.</li>
-              </ul>
-              <div class="role__brands" aria-hidden="true">
-                <img src="assets/icons/imdb.svg" alt="IMDb" />
-                <img src="assets/icons/themoviedatabase.svg" alt="The Movie Database" />
-              </div>
-            </div>
-          </li>
-
-          <li class="role" data-role>
-            <div class="logo-tile" data-cursor="Comfort TV">
-              <img class="logo-tile__img" src="assets/icons/netflix.svg" alt="Netflix" />
-            </div>
-            <div class="role__body">
-              <div class="role__top">
-                <span class="role__year">Comfort TV · Rewatchable</span>
-                <span class="role__loc">On in the background</span>
-              </div>
-              <h3 class="role__title" data-scramble>Comfort TV</h3>
-              <p class="role__org">The rewatch rotation</p>
-              <ul class="shows">
-                <li><span>Supernatural</span><em>The CW</em></li>
-                <li><span>The Big Bang Theory</span><em>CBS</em></li>
-                <li><span>How I Met Your Mother</span><em>CBS</em></li>
-                <li><span>Brooklyn Nine-Nine</span><em>FOX / NBC</em></li>
-              </ul>
-              <div class="role__brands" aria-hidden="true">
-                <img src="assets/icons/cbs.svg" alt="CBS" />
-                <img src="assets/icons/nbc.svg" alt="NBC" />
-                <img src="assets/icons/fox.svg" alt="FOX" />
-              </div>
-            </div>
-          </li>
-        </ol>
-      </div>
-
-      <!-- Active pastimes — case-file card styling -->
-      <ul class="pcards">
+      <ul class="pcards pcards--clock">
         <li class="pcard" data-cap>
-          <div class="pcard__head"><span class="pcard__no">SIDE_01</span><span class="pcard__tag">Building · AI</span></div>
-          <h3 class="pcard__title" data-scramble>Claude Code</h3>
+          <div class="pcard__head"><span class="pcard__no">CLOCK_01</span><span class="pcard__tag">Gaming · MOBA</span></div>
+          <div class="pcard__brand">
+            <span class="logo-tile logo-tile--sm" data-cursor="Dota 2"><img class="logo-tile__img" src="assets/icons/dota2.svg" alt="Dota 2" /></span>
+            <h3 class="pcard__title" data-scramble>Dota 2</h3>
+          </div>
+          <p class="pcard__summary">The ranked grind — matchmaking, team fights, and the occasional 60-minute nail-biter won on a good late-game comeback.</p>
+          <span class="pcard__meta">Valve · Steam</span>
+        </li>
+
+        <li class="pcard" data-cap>
+          <div class="pcard__head"><span class="pcard__no">CLOCK_02</span><span class="pcard__tag">Gaming · Football</span></div>
+          <div class="pcard__brand">
+            <span class="logo-tile logo-tile--sm" data-cursor="EA Sports FC"><span class="logo-tile__mark logo-tile__mark--fc">EA&nbsp;FC</span></span>
+            <h3 class="pcard__title" data-scramble>EA Sports FC</h3>
+          </div>
+          <p class="pcard__summary">Building Ultimate Team squads and grinding career mode — football for the nights I can't be out on the pitch.</p>
+          <span class="pcard__meta">EA Sports</span>
+        </li>
+
+        <li class="pcard" data-cap>
+          <div class="pcard__head"><span class="pcard__no">CLOCK_03</span><span class="pcard__tag">Cinema · Marvel &amp; DC</span></div>
+          <div class="pcard__brand">
+            <span class="logo-tile logo-tile--sm" data-cursor="Superhero films"><img class="logo-tile__img" src="assets/icons/dcentertainment.svg" alt="DC" /></span>
+            <h3 class="pcard__title" data-scramble>Superhero films</h3>
+          </div>
+          <p class="pcard__summary">Marvel and DC on the big screen — team-ups, origin stories, and an ever-growing watchlist I'm always adding to.</p>
+          <span class="pcard__meta">Opening night</span>
+        </li>
+
+        <li class="pcard" data-cap>
+          <div class="pcard__head"><span class="pcard__no">CLOCK_04</span><span class="pcard__tag">Comfort TV · Rewatchable</span></div>
+          <div class="pcard__brand">
+            <span class="logo-tile logo-tile--sm" data-cursor="Comfort TV"><img class="logo-tile__img" src="assets/icons/netflix.svg" alt="Netflix" /></span>
+            <h3 class="pcard__title" data-scramble>Comfort TV</h3>
+          </div>
+          <p class="pcard__summary">The rewatch rotation that's always on in the background — Supernatural, The Big Bang Theory, How I Met Your Mother, and Brooklyn Nine-Nine.</p>
+          <span class="pcard__meta">On in the background</span>
+        </li>
+
+        <li class="pcard" data-cap>
+          <div class="pcard__head"><span class="pcard__no">CLOCK_05</span><span class="pcard__tag">Building · AI</span></div>
+          <div class="pcard__brand">
+            <span class="logo-tile logo-tile--sm" data-cursor="Claude Code"><span class="logo-tile__mark logo-tile__mark--code">&gt;_</span></span>
+            <h3 class="pcard__title" data-scramble>Claude Code</h3>
+          </div>
           <p class="pcard__summary">Tinkering with agentic coding after hours — pointing Claude Code at small problems, automating the dull bits, and building little tools just to see how far it goes.</p>
           <span class="pcard__meta">Personal projects · ongoing</span>
         </li>
+
         <li class="pcard" data-cap>
-          <div class="pcard__head"><span class="pcard__no">SIDE_02</span><span class="pcard__tag">Football · Physical</span></div>
-          <h3 class="pcard__title" data-scramble>Saturday football</h3>
+          <div class="pcard__head"><span class="pcard__no">CLOCK_06</span><span class="pcard__tag">Football · Physical</span></div>
+          <div class="pcard__brand">
+            <span class="logo-tile logo-tile--sm" data-cursor="Saturday football">
+              <svg class="logo-tile__img" viewBox="0 0 24 24" fill="none" stroke="#181511" stroke-width="1.3" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 6.7l3.9 2.8-1.5 4.6H9.6L8.1 9.5 12 6.7z" />
+                <path d="M12 6.7V3.3M15.9 9.5l3.1-1.1M14.4 14.1l2.8 2.2M9.6 14.1l-2.8 2.2M8.1 9.5L5 8.4" />
+              </svg>
+            </span>
+            <h3 class="pcard__title" data-scramble>Saturday football</h3>
+          </div>
           <p class="pcard__summary">Informal pickup games on the Monash Sport soccer fields every Saturday — the standing weekly fixture that gets me off the screen and out on the pitch.</p>
           <span class="pcard__meta">Monash Sport · every Saturday</span>
         </li>
