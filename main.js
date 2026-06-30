@@ -441,6 +441,51 @@
     });
   }
 
+  /* ---------- Matrix rain (active only on dark themes) ---------- */
+  function initMatrix() {
+    if (reduceMotion) return;
+    var canvas = document.querySelector(".matrix");
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext("2d");
+    var html = document.documentElement;
+    var GLYPHS = "0123456789ABCDEFｱｶｻﾀﾅﾊﾏﾝ".split("");
+    var fontSize = 16, cols = 0, drops = [], w = 0, h = 0, raf = null, col = { glyph: "#16e0ff", bg: "#0b0b0d" };
+
+    function readColors() {
+      var cs = getComputedStyle(html);
+      col.glyph = cs.getPropertyValue("--accent").trim() || "#16e0ff";
+      col.bg = cs.getPropertyValue("--bone").trim() || "#0b0b0d";
+    }
+    function resize() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
+      cols = Math.floor(w / fontSize);
+      drops = [];
+      for (var i = 0; i < cols; i++) drops[i] = Math.random() * -50;
+    }
+    function draw() {
+      ctx.globalAlpha = 0.09; ctx.fillStyle = col.bg; ctx.fillRect(0, 0, w, h);
+      ctx.globalAlpha = 1; ctx.fillStyle = col.glyph; ctx.font = fontSize + "px ui-monospace, monospace";
+      for (var i = 0; i < drops.length; i++) {
+        ctx.fillText(GLYPHS[Math.floor(Math.random() * GLYPHS.length)], i * fontSize, drops[i] * fontSize);
+        if (drops[i] * fontSize > h && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+      raf = requestAnimationFrame(draw);
+    }
+    function update() {
+      var t = html.dataset.theme;
+      var on = (t === "cyber" || t === "acid") && !document.hidden;
+      if (on && !raf) { readColors(); resize(); canvas.style.display = "block"; draw(); }
+      else if (!on && raf) { cancelAnimationFrame(raf); raf = null; canvas.style.display = "none"; }
+      else if (on) { readColors(); }
+    }
+    new MutationObserver(update).observe(html, { attributes: true, attributeFilter: ["data-theme"] });
+    window.addEventListener("resize", function () { if (raf) resize(); });
+    document.addEventListener("visibilitychange", update);
+    update();
+  }
+
   /* ---------- Page transition wipe ---------- */
   function initTransitions() {
     var wipe = document.querySelector(".wipe");
@@ -495,6 +540,7 @@
     initTilt();
     initWorkPreview();
     initThemes();
+    initMatrix();
     initTransitions();
 
     runLoader(function () {

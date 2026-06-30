@@ -24,6 +24,7 @@
   <div class="grain" aria-hidden="true"></div>
   <div class="cursor" aria-hidden="true"><span class="cursor__label"></span></div>
   <div class="wipe" aria-hidden="true"><span class="wipe__label">Decrypting…</span></div>
+  <canvas class="matrix" aria-hidden="true"></canvas>
 
   <!-- Preloader -->
   <div class="loader" id="loader" aria-hidden="true">
@@ -52,8 +53,9 @@
       <ul class="menu__links">
         <li><a href="about.html" data-scramble><span class="menu__idx">01</span> About</a></li>
         <li><a href="#work" data-scramble><span class="menu__idx">02</span> Work</a></li>
-        <li><a href="#certs" data-scramble><span class="menu__idx">03</span> Credentials</a></li>
-        <li><a href="#contact" data-scramble><span class="menu__idx">04</span> Contact</a></li>
+        <li><a href="#projects" data-scramble><span class="menu__idx">03</span> Projects</a></li>
+        <li><a href="#certs" data-scramble><span class="menu__idx">04</span> Credentials</a></li>
+        <li><a href="#contact" data-scramble><span class="menu__idx">05</span> Contact</a></li>
       </ul>
       <div class="menu__meta">
         <div class="menu__col">
@@ -376,6 +378,57 @@
           </li>
         </ol>
       </div>
+    </section>
+
+    <!-- ============================ CASE FILES ============================ -->
+    <section class="cases" id="projects">
+      <div class="caps__head">
+        <h2 class="section-title" data-reveal data-scramble>Case files</h2>
+        <p class="caps__note" data-reveal>A few problems I've owned from ticket to resolution.</p>
+      </div>
+      <ol class="cases__list">
+        <li class="case" data-cap>
+          <div class="case__head"><span class="case__no">CASE_01</span><span class="case__tag">Endpoint · Rollout</span></div>
+          <h3 class="case__title" data-scramble>Store-fleet dock standardisation</h3>
+          <dl class="case__body">
+            <div class="case__row"><dt>Objective</dt><dd>Stop the steady stream of failing, costly laptop docks across 400+ retail stores.</dd></div>
+            <div class="case__row"><dt>My role</dt><dd>Replaced the Lenovo docks with daisy-chained hub monitors and wrote the rollout playbook for the service desk.</dd></div>
+            <div class="case__row"><dt>Outcome</dt><dd>Simpler desk setups, far fewer dock failures, and a repeatable process anyone on the team could run.</dd></div>
+          </dl>
+        </li>
+        <li class="case" data-cap>
+          <div class="case__head"><span class="case__no">CASE_02</span><span class="case__tag">ITSM · Knowledge</span></div>
+          <h3 class="case__title" data-scramble>Service-desk playbook</h3>
+          <dl class="case__body">
+            <div class="case__row"><dt>Objective</dt><dd>Turn tribal knowledge and repeat tickets into a consistent, documented process.</dd></div>
+            <div class="case__row"><dt>My role</dt><dd>Documented SOPs, KBAs and escalation paths, and became the second-level point the desk leans on.</dd></div>
+            <div class="case__row"><dt>Outcome</dt><dd>Faster, more consistent resolutions and a knowledge base new starters could pick up quickly.</dd></div>
+          </dl>
+        </li>
+        <li class="case" data-cap>
+          <div class="case__head"><span class="case__no">CASE_03</span><span class="case__tag">Identity · Devices</span></div>
+          <h3 class="case__title" data-scramble>Modern device builds &amp; access</h3>
+          <dl class="case__body">
+            <div class="case__row"><dt>Objective</dt><dd>Get staff onto secure, standardised devices with the right access from day one.</dd></div>
+            <div class="case__row"><dt>My role</dt><dd>Built laptops to the SOE, handled Active Directory and M365 administration, and ran joiner/leaver processes end to end.</dd></div>
+            <div class="case__row"><dt>Outcome</dt><dd>Consistent, compliant endpoints and a tidy account lifecycle with less manual rework.</dd></div>
+          </dl>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ============================ HOME LAB ============================ -->
+    <section class="lab" id="lab">
+      <div class="caps__head">
+        <h2 class="section-title" data-reveal data-scramble>Home lab</h2>
+        <p class="caps__note" data-reveal>Where I break things on purpose — my sandbox for SC-300 and the Microsoft cloud.</p>
+      </div>
+      <ul class="lab__grid">
+        <li class="lab__item" data-cap><span class="lab__k">01</span><h3 class="lab__t" data-scramble>Microsoft 365 dev tenant</h3><p class="lab__d">A throwaway tenant for testing conditional access, policies and admin without touching production.</p></li>
+        <li class="lab__item" data-cap><span class="lab__k">02</span><h3 class="lab__t" data-scramble>Entra ID &amp; Intune</h3><p class="lab__d">Hands-on with identity governance, conditional access and endpoint policies — straight from the SC-300 syllabus.</p></li>
+        <li class="lab__item" data-cap><span class="lab__k">03</span><h3 class="lab__t" data-scramble>Azure free account</h3><p class="lab__d">Spinning up resources to learn cloud fundamentals and how the pieces fit together.</p></li>
+        <li class="lab__item" data-cap><span class="lab__k">04</span><h3 class="lab__t" data-scramble>Local VMs &amp; PowerShell</h3><p class="lab__d">Hyper-V and Windows Sandbox for builds and break-fix, with PowerShell to automate the repetitive bits.</p></li>
+      </ul>
     </section>
 
     <!-- ============================ CERTIFICATIONS ============================ -->

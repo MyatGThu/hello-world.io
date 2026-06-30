@@ -506,6 +506,30 @@ html[data-theme="cyber"] .rl:nth-child(3n+2), html[data-theme="acid"] .rl:nth-ch
 .theme-fab { position: fixed; left: 16px; bottom: 16px; z-index: 820; display: inline-flex; align-items: center; gap: 9px; padding: 9px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--noir); color: var(--noir-fg); font-family: var(--font); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: border-color .3s var(--ease); }
 .theme-fab:hover { border-color: var(--accent); }
 .theme-fab__dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 9px var(--accent); }
+
+/* ----- Case files ----- */
+.cases { max-width: var(--maxw); margin: 0 auto; padding: clamp(70px, 12vh, 150px) var(--pad); }
+.cases__list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+.case { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: clamp(22px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 16px; transition: border-color .4s var(--ease), transform .4s var(--ease); }
+@media (hover: hover) { .case:hover { border-color: var(--accent); transform: translateY(-4px); } }
+.case__head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.case__no { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: 12px; letter-spacing: .08em; color: var(--accent); }
+.case__tag { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.case__title { font-size: clamp(21px, 2.2vw, 28px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.1; }
+.case__body { display: flex; flex-direction: column; gap: 14px; margin: 0; }
+.case__row dt { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.case__row dd { margin: 0; color: var(--ink-2); font-size: 14.5px; line-height: 1.5; }
+
+/* ----- Home lab ----- */
+.lab { max-width: var(--maxw); margin: 0 auto; padding: clamp(60px, 10vh, 130px) var(--pad); }
+.lab__grid { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: clamp(20px, 2.4vw, 40px); }
+.lab__item { border-top: 2px solid var(--ink); padding-top: 22px; }
+.lab__k { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: 13px; font-weight: 600; color: var(--accent); }
+.lab__t { margin-top: 14px; font-size: clamp(18px, 1.6vw, 22px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.12; }
+.lab__d { margin-top: 11px; color: var(--muted); font-size: 14.5px; line-height: 1.55; }
+
+/* ----- Matrix rain (dark themes only; toggled in JS) ----- */
+.matrix { position: fixed; inset: 0; z-index: -1; pointer-events: none; display: none; opacity: 0.4; }
 .contact__title .word { display: inline-block; }
 .contact__title .word--accent { color: var(--accent); }
 .contact__mail { display: inline-block; margin-top: clamp(36px, 6vh, 64px); font-size: clamp(20px, 3vw, 40px); font-weight: 400; padding-bottom: 6px; border-bottom: 1px solid rgba(236,229,215,0.4); transition: color .35s var(--ease), border-color .35s var(--ease); }
