@@ -529,10 +529,15 @@ html[data-theme="cyber"] .rl:nth-child(3n+2), html[data-theme="acid"] .rl:nth-ch
 .theme-picker__toggle:hover { border-color: var(--accent); }
 .theme-fab__dot { width: 9px; height: 9px; border-radius: 50%; flex: none; background: var(--accent); box-shadow: 0 0 9px var(--accent); }
 .theme-picker__chev { font-size: 9px; opacity: .55; transition: transform .3s var(--ease); }
-.theme-picker:hover .theme-picker__chev, .theme-picker:focus-within .theme-picker__chev, .theme-picker.is-open .theme-picker__chev { transform: translateY(-1px); opacity: .9; }
+.theme-picker.is-open .theme-picker__chev { transform: translateY(-1px); opacity: .9; }
 
-.theme-picker__panel { position: absolute; left: 0; bottom: calc(100% + 10px); min-width: 232px; display: flex; flex-direction: column; gap: 2px; padding: 8px; background: var(--noir); border: 1px solid rgb(from var(--noir-fg) r g b / 0.16); border-radius: 15px; box-shadow: 0 22px 55px -26px rgba(0, 0, 0, 0.62); opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .28s var(--ease), transform .28s var(--ease); }
-.theme-picker:hover .theme-picker__panel, .theme-picker:focus-within .theme-picker__panel, .theme-picker.is-open .theme-picker__panel { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.theme-picker__panel { position: absolute; left: 0; bottom: calc(100% + 10px); min-width: 232px; max-width: calc(100vw - 32px); max-height: calc(100dvh - 84px); overflow-y: auto; display: flex; flex-direction: column; gap: 2px; padding: 8px; background: var(--noir); border: 1px solid rgb(from var(--noir-fg) r g b / 0.16); border-radius: 15px; box-shadow: 0 22px 55px -26px rgba(0, 0, 0, 0.62); opacity: 0; visibility: hidden; transform: translateY(8px); pointer-events: none; transition: opacity .28s var(--ease), transform .28s var(--ease), visibility 0s linear .28s; }
+/* Tap/keyboard reveal works on every device; hover reveal only where a real pointer can hover. */
+.theme-picker.is-open .theme-picker__panel { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; transition: opacity .28s var(--ease), transform .28s var(--ease); }
+@media (hover: hover) {
+  .theme-picker:hover .theme-picker__panel { opacity: 1; visibility: visible; transform: translateY(0); pointer-events: auto; transition: opacity .28s var(--ease), transform .28s var(--ease); }
+  .theme-picker:hover .theme-picker__chev { transform: translateY(-1px); opacity: .9; }
+}
 
 .theme-opt { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 44px; text-align: left; padding: 8px 12px; border: 0; border-radius: 10px; background: none; color: var(--noir-fg); font-family: var(--font); cursor: pointer; transition: background-color .2s var(--ease); }
 .theme-opt:hover, .theme-opt:focus-visible { background: rgb(from var(--noir-fg) r g b / 0.09); }

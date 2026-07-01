@@ -452,7 +452,7 @@
       b.querySelector(".theme-opt__sw").style.background = m.sw;
       b.querySelector(".theme-opt__name").textContent = m.label;
       b.querySelector(".theme-opt__desc").textContent = m.desc;
-      b.addEventListener("click", function () { apply(t); close(); });
+      b.addEventListener("click", function () { apply(t); close(); toggle.focus(); });
       panel.appendChild(b);
       opts[t] = b;
     });
@@ -491,7 +491,7 @@
       picker.classList.contains("is-open") ? close() : open();
     });
     document.addEventListener("click", function (e) { if (!picker.contains(e.target)) close(); });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && picker.classList.contains("is-open")) { close(); toggle.focus(); } });
 
     apply(html.dataset.theme || "bone");
   }
