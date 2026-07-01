@@ -420,27 +420,80 @@
   /* ---------- Theme switcher (rotates Bone → Cyber → Acid) ---------- */
   function initThemes() {
     var THEMES = ["bone", "colorblind", "cyber", "acid"];
-    var LABELS = { bone: "Bone", colorblind: "Colour-safe", cyber: "Cyber", acid: "Acid" };
+    var META = {
+      bone:       { label: "Bone",         desc: "Warm editorial",           sw: "#b8492c" },
+      colorblind: { label: "Colour-blind", desc: "High-contrast, safe palette", sw: "linear-gradient(90deg, #0067b0 0 50%, #b26a00 50% 100%)" },
+      cyber:      { label: "Cyber",        desc: "Neon on matte black",       sw: "#16e0ff" },
+      acid:       { label: "Acid",         desc: "Acid green",                sw: "#39ff14" }
+    };
     var html = document.documentElement;
-    var fab = document.createElement("button");
-    fab.className = "theme-fab";
-    fab.type = "button";
-    fab.setAttribute("aria-label", "Switch colour theme");
-    fab.innerHTML = '<span class="theme-fab__dot" aria-hidden="true"></span><span class="theme-fab__name"></span>';
-    document.body.appendChild(fab);
-    var nameEl = fab.querySelector(".theme-fab__name");
+
+    var picker = document.createElement("div");
+    picker.className = "theme-picker";
+
+    var panel = document.createElement("div");
+    panel.className = "theme-picker__panel";
+    panel.setAttribute("role", "menu");
+    panel.setAttribute("aria-label", "Select colour theme");
+
+    var opts = {};
+    THEMES.forEach(function (t) {
+      var m = META[t];
+      var b = document.createElement("button");
+      b.className = "theme-opt";
+      b.type = "button";
+      b.setAttribute("role", "menuitemradio");
+      b.setAttribute("data-theme", t);
+      b.title = m.label + " — " + m.desc;
+      b.innerHTML =
+        '<span class="theme-opt__sw" aria-hidden="true"></span>' +
+        '<span class="theme-opt__text"><span class="theme-opt__name"></span>' +
+        '<span class="theme-opt__desc"></span></span>';
+      b.querySelector(".theme-opt__sw").style.background = m.sw;
+      b.querySelector(".theme-opt__name").textContent = m.label;
+      b.querySelector(".theme-opt__desc").textContent = m.desc;
+      b.addEventListener("click", function () { apply(t); close(); });
+      panel.appendChild(b);
+      opts[t] = b;
+    });
+
+    var toggle = document.createElement("button");
+    toggle.className = "theme-picker__toggle";
+    toggle.type = "button";
+    toggle.setAttribute("aria-haspopup", "true");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Colour theme");
+    toggle.innerHTML =
+      '<span class="theme-fab__dot" aria-hidden="true"></span>' +
+      '<span class="theme-picker__current"></span>' +
+      '<span class="theme-picker__chev" aria-hidden="true">▴</span>';
+    var currentEl = toggle.querySelector(".theme-picker__current");
+
+    picker.appendChild(panel);
+    picker.appendChild(toggle);
+    document.body.appendChild(picker);
 
     function apply(theme) {
       if (THEMES.indexOf(theme) < 0) theme = "bone";
       html.dataset.theme = theme;
-      nameEl.textContent = LABELS[theme];
+      currentEl.textContent = META[theme].label;
+      THEMES.forEach(function (t) {
+        var on = t === theme;
+        opts[t].setAttribute("aria-checked", on ? "true" : "false");
+        opts[t].classList.toggle("is-active", on);
+      });
       try { localStorage.setItem("theme", theme); } catch (e) {}
     }
-    apply(html.dataset.theme || "bone");
-    fab.addEventListener("click", function () {
-      var i = THEMES.indexOf(html.dataset.theme || "bone");
-      apply(THEMES[(i + 1) % THEMES.length]);
+    function open() { picker.classList.add("is-open"); toggle.setAttribute("aria-expanded", "true"); }
+    function close() { picker.classList.remove("is-open"); toggle.setAttribute("aria-expanded", "false"); }
+
+    toggle.addEventListener("click", function () {
+      picker.classList.contains("is-open") ? close() : open();
     });
+    document.addEventListener("click", function (e) { if (!picker.contains(e.target)) close(); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+
+    apply(html.dataset.theme || "bone");
   }
 
   /* ---------- Case file modal (card floats up + expands) ---------- */
