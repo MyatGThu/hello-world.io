@@ -162,9 +162,18 @@
       else { out[0] = cloudN[i3] * spread.x; out[1] = cloudN[i3 + 1] * spread.y; out[2] = cloudN[i3 + 2] * spread.z; }
     }
 
-    var raf = null, lastT = 0, t = 0, visible = false, ta = [0, 0, 0], tb = [0, 0, 0];
+    // Bridges from main.js (separate IIFE, so custom events are the channel):
+    // a decrypt of the hero name pulses the sphere; an open modal hushes time.
+    var pulse = 0, hush = 1, hushT = 1;
+    window.addEventListener("mt:decrypt", function () { pulse = 1; });
+    window.addEventListener("mt:hush", function (e) { hushT = (e.detail && e.detail.on) ? 0.18 : 1; });
+
+    var raf = null, lastT = 0, t = 0, visible = false, fadedDrawn = false, ta = [0, 0, 0], tb = [0, 0, 0];
     function frame(now) {
-      var dt = Math.min((now - lastT) / 1000, 0.05); lastT = now; t += dt;
+      var dt = Math.min((now - lastT) / 1000, 0.05); lastT = now;
+      hush += (hushT - hush) * Math.min(1, dt * 3);
+      t += dt * hush; // the modal "holds the scene's breath"
+      if (pulse > 0) pulse = Math.max(0, pulse - dt * 0.9);
       var sc = window.scrollY + window.innerHeight / 2;
 
       // find the active milestone segment (cached document-space centres)
@@ -176,21 +185,28 @@
       var seg = cb > ca ? (sc - ca) / (cb - ca) : 0;
       seg = smooth(Math.max(0, Math.min(1, seg)));
 
-      // fade the whole scene out as it nears the opaque contact section
-      var alpha = 1;
-      var fadeStart = contactTop - window.innerHeight * 1.1;
-      if (sc > fadeStart) alpha = Math.max(0, 1 - (sc - fadeStart) / (window.innerHeight * 0.8));
+      // "Transmission sent" — approaching the opaque contact panel the field
+      // converges to a single bright point, flares, and blinks out.
+      var send = 0;
+      var sendStart = contactTop - window.innerHeight * 1.15;
+      if (sc > sendStart) send = smooth(Math.min(1, (sc - sendStart) / (window.innerHeight * 0.85)));
+      var fadeEnv = send < 0.8 ? 1 : Math.max(0, 1 - (send - 0.8) / 0.2);
 
-      if (alpha <= 0.001) { // scrolled into the contact zone — nothing to draw
-        pmat.opacity = 0; icosa.material.opacity = 0; renderer.render(scene, camera);
+      if (fadeEnv <= 0.001) { // fully sent — draw one clear frame, then idle cheaply
+        if (!fadedDrawn) { pmat.opacity = 0; icosa.material.opacity = 0; renderer.render(scene, camera); fadedDrawn = true; }
         raf = requestAnimationFrame(frame); return;
       }
+      fadedDrawn = false;
 
       var cxw = A.c[0] + (B.c[0] - A.c[0]) * seg;
       var cyw = A.c[1] + (B.c[1] - A.c[1]) * seg;
       var czw = A.c[2] + (B.c[2] - A.c[2]) * seg;
       var spineW = ((A.form === SPINE ? (1 - seg) : 0) + (B.form === SPINE ? seg : 0)); // helix-ness
+      var sphereness = ((A.form === SPHERE ? (1 - seg) : 0) + (B.form === SPHERE ? seg : 0));
 
+      var doPulse = pulse > 0.001 && sphereness > 0.01;
+      var wavePhase = (1 - pulse) * 9;
+      var keep = 1 - send;
       for (var i = 0; i < N; i++) {
         target(A.form, i, ta); target(B.form, i, tb);
         var i3 = i * 3;
@@ -198,16 +214,22 @@
         pos[i3] = ta[0] + (tb[0] - ta[0]) * seg + cxw + wob;
         pos[i3 + 1] = ta[1] + (tb[1] - ta[1]) * seg + cyw;
         pos[i3 + 2] = ta[2] + (tb[2] - ta[2]) * seg + czw + wob;
+        if (doPulse) { // radial shockwave along the sphere normal
+          var amp = Math.sin(wavePhase - sphere[i3 + 1] * 0.35) * pulse * 0.9 * sphereness;
+          pos[i3] += (sphere[i3] / 7.2) * amp;
+          pos[i3 + 1] += (sphere[i3 + 1] / 7.2) * amp;
+          pos[i3 + 2] += (sphere[i3 + 2] / 7.2) * amp;
+        }
+        if (send > 0) { pos[i3] *= keep; pos[i3 + 1] *= keep; pos[i3 + 2] *= keep; }
       }
       posAttr.needsUpdate = true;
 
-      var sphereness = ((A.form === SPHERE ? (1 - seg) : 0) + (B.form === SPHERE ? seg : 0));
-      icosa.material.opacity = baseIcosa * sphereness * alpha;
+      icosa.material.opacity = Math.min(1, baseIcosa * sphereness + pulse * 0.3 * sphereness) * fadeEnv * keep;
       icosa.position.set(cxw, cyw, czw);
-      icosa.scale.setScalar(0.6 + sphereness * 0.4 + Math.sin(t * 0.6) * 0.03);
+      icosa.scale.setScalar((0.6 + sphereness * 0.4 + Math.sin(t * 0.6) * 0.03) * Math.max(0.05, 1 - send * 0.95));
       icosa.visible = icosa.material.opacity > 0.002;
-      pmat.opacity = baseParticle * alpha;
-      pmat.size = 0.13 - spineW * 0.03;
+      pmat.opacity = baseParticle * fadeEnv;
+      pmat.size = (0.13 - spineW * 0.03) * (1 + send * 0.8);
 
       group.rotation.y = t * 0.05 + sphereness * Math.sin(t * 0.2) * 0.15;
       icosa.rotation.set(t * 0.12, t * 0.16, 0);

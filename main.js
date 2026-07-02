@@ -360,7 +360,11 @@
     function revealName(state) {
       nameShown = state;
       title.classList.toggle("is-revealed", state);
-      if (state) showReal();
+      if (state) {
+        showReal();
+        // Let the 3D scene answer the decrypt (scene3d.js listens).
+        window.dispatchEvent(new CustomEvent("mt:decrypt"));
+      }
     }
     function revealPhoto(state) { if (portrait) portrait.classList.toggle("is-revealed", state); }
 
@@ -507,6 +511,31 @@
     apply(html.dataset.theme || "bone");
   }
 
+  /* ---------- Case files: dossier tilt + glare toward the pointer ---------- */
+  function initCaseTilt() {
+    if (!hasGSAP || reduceMotion || !fine) return;
+    document.querySelectorAll(".case").forEach(function (el) {
+      var rx = gsap.quickTo(el, "rotationX", { duration: 0.45, ease: "power2.out" });
+      var ry = gsap.quickTo(el, "rotationY", { duration: 0.45, ease: "power2.out" });
+      var ty = gsap.quickTo(el, "y", { duration: 0.45, ease: "power2.out" });
+      var rect = null;
+      el.addEventListener("mouseenter", function () {
+        if (!el.classList.contains("is-risen")) return; // entrance owns the transform
+        rect = el.getBoundingClientRect(); // measured once — the tilt itself would skew live reads
+        gsap.set(el, { transformPerspective: 700 });
+      });
+      el.addEventListener("mousemove", function (e) {
+        if (!rect) return;
+        var dx = (e.clientX - rect.left) / rect.width - 0.5;
+        var dy = (e.clientY - rect.top) / rect.height - 0.5;
+        rx(dy * -6); ry(dx * 6); ty(-4);
+        el.style.setProperty("--gx", ((dx + 0.5) * 100).toFixed(1) + "%");
+        el.style.setProperty("--gy", ((dy + 0.5) * 100).toFixed(1) + "%");
+      });
+      el.addEventListener("mouseleave", function () { rect = null; rx(0); ry(0); ty(0); });
+    });
+  }
+
   /* ---------- Case file modal (card floats up + expands) ---------- */
   function initCaseModal() {
     var cards = document.querySelectorAll("[data-case]");
@@ -556,8 +585,12 @@
       modal.setAttribute("aria-hidden", "false");
       lock(true);
       card.scrollTop = 0;
+      window.dispatchEvent(new CustomEvent("mt:hush", { detail: { on: true } }));
       if (!hasGSAP || reduceMotion) { bg.style.opacity = 1; closeBtn.focus(); return; }
 
+      // The dossier tilt may hold a transform on the card — clear it before
+      // measuring, or the FLIP start/end rects are skewed.
+      gsap.set(el, { clearProps: "transform" });
       first = el.getBoundingClientRect();
       var last = card.getBoundingClientRect();
       busy = true;
@@ -576,6 +609,7 @@
       modal.classList.remove("is-open");
       modal.setAttribute("aria-hidden", "true");
       lock(false);
+      window.dispatchEvent(new CustomEvent("mt:hush", { detail: { on: false } }));
       var s = source; source = null;
       if (s) s.focus();
     }
@@ -704,6 +738,7 @@
     initThemes();
     initMatrix();
     initCaseModal();
+    initCaseTilt();
     initTransitions();
 
     runLoader(function () {

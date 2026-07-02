@@ -489,8 +489,13 @@ html:not(.js) .cert__open { display: none; }
 .edu { padding: 0 var(--pad) clamp(80px, 14vh, 200px); max-width: var(--maxw); margin: 0 auto; }
 .edu .section-title { margin-bottom: clamp(28px, 5vh, 52px); }
 .edu__list { list-style: none; padding: 0; }
-.edu__item { display: grid; grid-template-columns: 64px 150px 1fr 260px; gap: 24px; align-items: center; padding: clamp(18px, 3vh, 28px) 0; border-top: 1px solid var(--line); }
+.edu__item { display: grid; grid-template-columns: 64px 150px 1fr 260px; gap: 24px; align-items: center; padding: clamp(18px, 3vh, 28px) 0; border-top: 1px solid var(--line); perspective: 600px; }
 .edu__item:last-child { border-bottom: 1px solid var(--line); }
+/* Institution logo flips like a coin on row hover. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .edu__item .logo-tile { transition: border-color .4s var(--ease), transform .7s var(--ease), box-shadow .4s var(--ease); }
+  .edu__item:hover .logo-tile { transform: translateY(-2px) rotateY(360deg); }
+}
 .edu__year { font-size: 13px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-variant-numeric: tabular-nums; }
 .edu__deg { font-size: clamp(19px, 2.4vw, 30px); font-weight: 500; letter-spacing: -0.02em; }
 .edu__org { color: var(--accent); font-size: 13px; letter-spacing: .04em; text-transform: uppercase; text-align: right; }
@@ -556,8 +561,20 @@ html[data-theme="cyber"] .rl:nth-child(3n+2), html[data-theme="acid"] .rl:nth-ch
 /* ----- Case files ----- */
 .cases { max-width: var(--maxw); margin: 0 auto; padding: clamp(70px, 12vh, 150px) var(--pad); }
 .cases__list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
-.case { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: clamp(22px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 14px; cursor: pointer; transition: border-color .4s var(--ease), transform .4s var(--ease); }
+.case { position: relative; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: clamp(22px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 14px; cursor: pointer; transition: border-color .4s var(--ease), transform .4s var(--ease); }
 @media (hover: hover) { .case:hover { border-color: var(--accent); transform: translateY(-4px); } }
+/* Dossier tilt (JS) owns the transform on fine pointers — drop the CSS
+   transform transition so GSAP's writes aren't double-eased, and add the
+   pointer-tracked glare layer. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  html.js .case { transition: border-color .4s var(--ease); }
+  html.js .case::after {
+    content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    background: radial-gradient(340px circle at var(--gx, 50%) var(--gy, 50%), rgb(from var(--accent) r g b / 0.09), transparent 70%);
+    opacity: 0; transition: opacity .35s var(--ease);
+  }
+  html.js .case:hover::after { opacity: 1; }
+}
 .case__head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .case__no { font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; font-size: 12px; letter-spacing: .08em; color: var(--accent); }
 .case__tag { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
