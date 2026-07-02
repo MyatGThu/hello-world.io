@@ -195,11 +195,22 @@
   /* ---------- Generic reveals ---------- */
   function initReveals() {
     if (!hasGSAP) return;
-    if (reduceMotion) { gsap.set("[data-reveal],[data-cap],[data-role]", { clearProps: "all" }); return; }
+    if (reduceMotion) { gsap.set("[data-reveal],[data-cap],[data-role],[data-rise]", { clearProps: "all" }); return; }
     gsap.utils.toArray("[data-reveal]").forEach(function (el) {
       gsap.to(el, { opacity: 1, y: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 88%" } });
     });
     ScrollTrigger.batch("[data-cap]", { start: "top 90%", onEnter: function (b) { gsap.to(b, { opacity: 1, y: 0, duration: 0.9, ease: "power3.out", stagger: 0.08 }); } });
+    // Cards lie flat like a dossier on a table, then rise upright as they enter.
+    ScrollTrigger.batch("[data-rise]", {
+      start: "top 92%",
+      onEnter: function (b) {
+        gsap.fromTo(b,
+          { opacity: 0, rotateX: 42, y: 52, transformOrigin: "50% 100%" },
+          { opacity: 1, rotateX: 0, y: 0, duration: 1.05, ease: "power3.out", stagger: 0.09,
+            onComplete: function () { b.forEach(function (el) { el.classList.add("is-risen"); }); gsap.set(b, { clearProps: "transform" }); } }
+        );
+      }
+    });
     gsap.utils.toArray("[data-role]").forEach(function (el) {
       gsap.to(el, { opacity: 1, y: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%" } });
     });

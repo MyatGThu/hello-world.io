@@ -708,10 +708,13 @@ html.is-entering .wipe { transform: translateY(0); transition: none; }
 html.js [data-reveal] { opacity: 0; transform: translateY(28px); }
 html.js [data-cap] { opacity: 0; transform: translateY(24px); }
 html.js [data-role] { opacity: 0; transform: translateY(40px); }
+/* Cards that "rise" from flat into an upright 3D entrance (transform set by GSAP). */
+html.js [data-rise]:not(.is-risen) { opacity: 0; }
+.cases__list, .certs__grid, .pcards { perspective: 1400px; perspective-origin: 50% 42%; }
 /* split words revealed entirely by GSAP (yPercent) — no CSS transform here */
 
 @media (prefers-reduced-motion: reduce) {
-  html.js [data-reveal], html.js [data-cap], html.js [data-role] { opacity: 1 !important; transform: none !important; }
+  html.js [data-reveal], html.js [data-cap], html.js [data-role], html.js [data-rise] { opacity: 1 !important; transform: none !important; }
   .hero__scroll i, .head__dot, .badge__svg { animation: none; }
   .intro__lead .w { color: var(--ink); }
   * { scroll-behavior: auto !important; }
